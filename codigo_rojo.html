@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Código Rojo · Complicaciones Obstétricas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --rojo-codigo:#c8102e;
+    --rojo-oscuro:#7a0a1c;
+    --rojo-sangre:#8b0000;
+    --crema:#f5ede1;
+    --crema-osc:#e8dcc8;
+    --negro:#1a1612;
+    --grafito:#2d2722;
+    --oro:#c4a572;
+    --verde-vital:#3d7a5a;
+    --azul-clinico:#1e3a5f;
+    --gris-neutro:#6b6358;
+    --shadow-sm:0 1px 2px rgba(26,22,18,.08);
+    --shadow-md:0 4px 12px rgba(26,22,18,.12);
+    --shadow-lg:0 12px 40px rgba(26,22,18,.18);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+    font-family:'Inter',sans-serif;
+    background:var(--crema);
+    color:var(--negro);
+    line-height:1.6;
+    overflow-x:hidden;
+}
+
+/* Textura de fondo */
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+        radial-gradient(circle at 20% 50%,rgba(200,16,46,.04) 0%,transparent 50%),
+        radial-gradient(circle at 80% 80%,rgba(196,165,114,.06) 0%,transparent 50%);
+    pointer-events:none;
+    z-index:0;
+}
+
+/* ===== NAVEGACIÓN ===== */
+nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    background:rgba(245,237,225,.92);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(26,22,18,.08);
+    z-index:1000;
+    padding:.85rem 1.5rem;
+}
+.nav-inner{
+    max-width:1300px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.logo{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:1.25rem;
+    letter-spacing:-.02em;
+    color:var(--negro);
+    display:flex;align-items:center;gap:.6rem;
+}
+.logo-pulse{
+    width:12px;height:12px;
+    background:var(--rojo-codigo);
+    border-radius:50%;
+    animation:pulse 1.4s ease-in-out infinite;
+    box-shadow:0 0 12px var(--rojo-codigo);
+}
+@keyframes pulse{
+    0%,100%{transform:scale(1);opacity:1}
+    50%{transform:scale(1.4);opacity:.5}
+}
+
+.nav-links{display:flex;gap:.4rem;list-style:none;align-items:center}
+.nav-links a{
+    color:var(--grafito);
+    text-decoration:none;
+    font-size:.85rem;
+    font-weight:500;
+    padding:.5rem .9rem;
+    border-radius:6px;
+    transition:all .25s ease;
+    letter-spacing:.01em;
+}
+.nav-links a:hover{background:rgba(200,16,46,.08);color:var(--rojo-codigo)}
+
+.menu-btn{
+    display:none;
+    background:none;border:none;
+    font-size:1.6rem;
+    cursor:pointer;
+    color:var(--negro);
+    padding:.25rem;
+}
+
+@media(max-width:900px){
+    .nav-links{
+        display:none;
+        position:absolute;top:100%;left:0;right:0;
+        flex-direction:column;
+        background:var(--crema);
+        padding:1rem;
+        border-bottom:1px solid rgba(26,22,18,.08);
+        box-shadow:var(--shadow-md);
+    }
+    .nav-links.open{display:flex}
+    .nav-links a{padding:.85rem 1rem;width:100%;border-radius:8px}
+    .menu-btn{display:block}
+}
+
+/* ===== HERO ===== */
+.hero{
+    min-height:100vh;
+    display:flex;align-items:center;
+    padding:6rem 1.5rem 3rem;
+    position:relative;
+    overflow:hidden;
+}
+.hero-grid{
+    max-width:1300px;margin:0 auto;width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:3rem;align-items:center;
+    position:relative;z-index:1;
+}
+.hero-text .eyebrow{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    color:var(--rojo-codigo);
+    margin-bottom:1.2rem;
+    padding:.4rem .8rem;
+    border:1px solid var(--rojo-codigo);
+    border-radius:30px;
+    background:rgba(200,16,46,.05);
+}
+.hero h1{
+    font-family:'Fraunces',serif;
+    font-size:clamp(2.5rem,6vw,4.8rem);
+    font-weight:800;
+    line-height:.95;
+    letter-spacing:-.04em;
+    margin-bottom:1.5rem;
+}
+.hero h1 .red{color:var(--rojo-codigo);font-style:italic}
+.hero-text p{
+    font-size:1.1rem;
+    color:var(--grafito);
+    margin-bottom:2rem;
+    max-width:480px;
+}
+.btn-group{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn{
+    padding:.85rem 1.6rem;
+    font-size:.92rem;
+    font-weight:600;
+    text-decoration:none;
+    border-radius:8px;
+    transition:all .3s ease;
+    display:inline-flex;align-items:center;gap:.5rem;
+    border:none;cursor:pointer;
+    font-family:'Inter',sans-serif;
+}
+.btn-primary{background:var(--rojo-codigo);color:#fff}
+.btn-primary:hover{background:var(--rojo-oscuro);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-secondary{background:transparent;color:var(--negro);border:1.5px solid var(--negro)}
+.btn-secondary:hover{background:var(--negro);color:var(--crema)}
+
+/* Visual del hero */
+.hero-visual{
+    position:relative;
+    aspect-ratio:1;
+    max-width:480px;
+    margin:0 auto;
+}
+.vital-circle{
+    position:absolute;inset:0;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,rgba(200,16,46,.15),rgba(122,10,28,.08));
+    border:1px solid rgba(200,16,46,.2);
+    animation:rotate 60s linear infinite;
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.vital-circle-2{
+    position:absolute;inset:15%;
+    border-radius:50%;
+    border:1px dashed rgba(200,16,46,.3);
+    animation:rotate 40s linear infinite reverse;
+}
+.vital-center{
+    position:absolute;inset:30%;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--rojo-codigo),var(--rojo-oscuro));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;
+    box-shadow:0 0 60px rgba(200,16,46,.4);
+    animation:pulseHeart 1.6s ease-in-out infinite;
+}
+@keyframes pulseHeart{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.05)}
+}
+.vital-center span{
+    font-family:'Fraunces',serif;
+    font-weight:800;
+    font-size:clamp(2rem,5vw,3rem);
+    letter-spacing:-.02em;
+}
+
+/* Etiquetas flotantes */
+.float-label{
+    position:absolute;
+    background:var(--crema);
+    border:1px solid rgba(26,22,18,.12);
+    padding:.6rem .9rem;
+    border-radius:8px;
+    font-size:.75rem;
+    font-family:'JetBrains Mono',monospace;
+    box-shadow:var(--shadow-sm);
+    display:flex;align-items:center;gap:.5rem;
+}
+.float-label::before{
+    content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--rojo-codigo);
+}
+.fl-1{top:8%;right:-8%;animation:floatA 4s ease-in-out infinite}
+.fl-2{bottom:15%;left:-10%;animation:floatA 4s ease-in-out infinite .8s}
+.fl-3{bottom:5%;right:5%;animation:floatA 4s ease-in-out infinite 1.6s}
+@keyframes floatA{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+}
+
+@media(max-width:768px){
+    .hero-grid{grid-template-columns:1fr;gap:2rem}
+    .hero-visual{max-width:280px;order:-1}
+    .fl-1{right:-5%}.fl-2{left:-5%}
+}
+
+/* ===== SECCIÓN GENÉRICA ===== */
+section{
+    padding:5rem 1.5rem;
+    position:relative;
+    z-index:1;
+}
+.container{max-width:1200px;margin:0 auto}
+.section-head{
+    margin-bottom:3rem;
+    display:flex;align-items:flex-end;justify-content:space-between;
+    flex-wrap:wrap;gap:1rem;
+}
+.section-head h2{
+    font-family:'Fraunces',serif;
+    font-size:clamp(2rem,4.5vw,3.2rem);
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.03em;
+    max-width:680px;
+}
+.section-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.75rem;
+    color:var(--rojo-codigo);
+    letter-spacing:.2em;
+    margin-bottom:.8rem;
+    display:block;
+}
+
+/* ===== CARDS DE COMPLICACIONES ===== */
+.complications-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:1.2rem;
+}
+.comp-card{
+    background:#fff;
+    border:1px solid rgba(26,22,18,.08);
+    border-radius:14px;
+    padding:1.8rem;
+    cursor:pointer;
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+    overflow:hidden;
+}
+.comp-card::before{
+    content:'';
+    position:absolute;top:0;left:0;
+    width:100%;height:3px;
+    background:var(--rojo-codigo);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .4s ease;
+}
+.comp-card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-lg);
+    border-color:transparent;
+}
+.comp-card:hover::before{transform:scaleX(1)}
+.comp-icon{
+    width:42px;height:42px;
+    border-radius:10px;
+    background:rgba(200,16,46,.1);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:1rem;
+    font-size:1.3rem;
+}
+.comp-card h3{
+    font-family:'Fraunces',serif;
+    font-size:1.4rem;
+    font-weight:700;
+    margin-bottom:.5rem;
+    letter-spacing:-.02em;
+}
+.comp-card .tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.65rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    padding:.25rem .6rem;
+    border-radius:4px;
+    margin-bottom:.8rem;
+}
+.tag-critical{background:rgba(200,16,46,.12);color:var(--rojo-codigo)}
+.tag-urgent{background:rgba(196,165,114,.2);color:#8b6914}
+.tag-moderate{background:rgba(30,58,95,.1);color:var(--azul-clinico)}
+.comp-card p{
+    font-size:.92rem;
+    color:var(--grafito);
+}
+.comp-more{
+    margin-top:1rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.7rem;
+    color:var(--rojo-codigo);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:.4rem;
+}
+
+/* ===== CÓDIGO ROJO - SECCIÓN PRINCIPAL ===== */
+.codigo-rojo-section{
+    background:var(--negro);
+    color:var(--crema);
+    margin:0 -1.5rem;
+    padding:6rem 1.5rem;
+    position:relative;
+    overflow:hidden;
+}
+.codigo-rojo-section::before{
+    content:'';
+    position:absolute;
+    top:-50%;right:-20%;
+    width:80%;height:200%;
+    background:radial-gradient(ellipse,rgba(200,16,46,.15),transparent 60%);
+    pointer-events:none;
+}
+.cr-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.25em;
+    color:var(--rojo-codigo);
+    margin-bottom:1rem;
+    display:flex;align-items:center;gap:.6rem;
+}
+.cr-eyebrow::before{
+    content:'';width:30px;height:1px;background:var(--rojo-codigo);
+}
+.codigo-rojo-section h2{
+    font-family:'Fraunces',serif;
+    font-size:clamp(2.2rem,5vw,3.6rem);
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-.03em;
+    margin-bottom:1rem;
+    color:var(--crema);
+}
+.codigo-rojo-section h2 em{color:var(--rojo-codigo);font-style:italic}
+.cr-intro{
+    max-width:680px;
+    color:rgba(245,237,225,.7);
+    font-size:1.05rem;
+    margin-bottom:3rem;
+}
+
+/* Definición destacada */
+.cr-definition{
+    background:linear-gradient(135deg,rgba(200,16,46,.12),rgba(122,10,28,.05));
+    border:1px solid rgba(200,16,46,.3);
+    border-left:4px solid var(--rojo-codigo);
+    padding:2rem;
+    border-radius:10px;
+    margin-bottom:3rem;
+}
+.cr-definition h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:var(--rojo-codigo);
+    margin-bottom:.8rem;
+}
+.cr-definition p{
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+    line-height:1.4;
+    color:var(--crema);
+}
+
+/* ===== TIMELINE INTERACTIVO ===== */
+.timeline-tabs{
+    display:flex;gap:.5rem;
+    margin-bottom:2rem;
+    overflow-x:auto;
+    padding-bottom:.5rem;
+    scrollbar-width:thin;
+}
+.timeline-tab{
+    flex-shrink:0;
+    background:transparent;
+    border:1px solid rgba(245,237,225,.2);
+    color:rgba(245,237,225,.7);
+    padding:.7rem 1.2rem;
+    border-radius:8px;
+    cursor:pointer;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.75rem;
+    letter-spacing:.05em;
+    transition:all .3s ease;
+    white-space:nowrap;
+}
+.timeline-tab:hover{border-color:var(--rojo-codigo);color:var(--crema)}
+.timeline-tab.active{
+    background:var(--rojo-codigo);
+    border-color:var(--rojo-codigo);
+    color:#fff;
+}
+.timeline-content{
+    background:rgba(245,237,225,.04);
+    border:1px solid rgba(245,237,225,.1);
+    border-radius:14px;
+    padding:2rem;
+    min-height:380px;
+}
+.tl-panel{display:none;animation:fadeIn .4s ease}
+.tl-panel.active{display:block}
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+}
+.tl-time{
+    font-family:'JetBrains Mono',monospace;
+    font-size:2.2rem;
+    font-weight:600;
+    color:var(--rojo-codigo);
+    margin-bottom:.3rem;
+}
+.tl-panel h3{
+    font-family:'Fraunces',serif;
+    font-size:1.6rem;
+    font-weight:700;
+    margin-bottom:1.2rem;
+    color:var(--crema);
+}
+.tl-list{list-style:none}
+.tl-list li{
+    padding:.7rem 0;
+    border-bottom:1px solid rgba(245,237,225,.08);
+    display:flex;align-items:flex-start;gap:.8rem;
+    color:rgba(245,237,225,.85);
+    font-size:.95rem;
+}
+.tl-list li::before{
+    content:'';flex-shrink:0;
+    width:6px;height:6px;
+    background:var(--rojo-codigo);
+    border-radius:50%;
+    margin-top:.55rem;
+}
+.tl-list li:last-child{border-bottom:none}
+
+/* ===== ROLES DEL EQUIPO ===== */
+.roles-section{
+    padding:5rem 1.5rem;
+    background:var(--crema-osc);
+    margin:0 -1.5rem;
+}
+.roles-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:1rem;
+    margin-top:2.5rem;
+}
+.role-card{
+    background:#fff;
+    border-radius:12px;
+    padding:1.6rem;
+    border-top:4px solid;
+    transition:transform .3s ease,box-shadow .3s ease;
+}
+.role-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.role-1{border-color:var(--rojo-codigo)}
+.role-2{border-color:var(--oro)}
+.role-3{border-color:var(--azul-clinico)}
+.role-4{border-color:var(--verde-vital)}
+
+.role-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.7rem;
+    letter-spacing:.2em;
+    color:var(--gris-neutro);
+    margin-bottom:.3rem;
+}
+.role-card h4{
+    font-family:'Fraunces',serif;
+    font-size:1.25rem;
+    font-weight:700;
+    margin-bottom:.8rem;
+    letter-spacing:-.01em;
+}
+.role-card ul{list-style:none;font-size:.88rem;color:var(--grafito)}
+.role-card ul li{padding:.4rem 0;display:flex;gap:.5rem}
+.role-card ul li::before{content:'→';color:var(--rojo-codigo);font-weight:600;flex-shrink:0}
+
+/* ===== CHOQUE HEMORRÁGICO - TABLA INTERACTIVA ===== */
+.shock-section{padding:5rem 1.5rem}
+.shock-tabs{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:.5rem;
+    margin-top:2rem;
+    margin-bottom:1.5rem;
+}
+.shock-tab{
+    background:#fff;
+    border:2px solid rgba(26,22,18,.08);
+    padding:1rem .8rem;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:center;
+    transition:all .3s ease;
+    position:relative;
+    overflow:hidden;
+}
+.shock-tab .roman{
+    font-family:'Fraunces',serif;
+    font-size:1.5rem;
+    font-weight:800;
+    color:var(--gris-neutro);
+    transition:color .3s;
+}
+.shock-tab .label{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.65rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--gris-neutro);
+    margin-top:.2rem;
+    transition:color .3s;
+}
+.shock-tab:hover{border-color:var(--rojo-codigo)}
+.shock-tab.active{
+    background:var(--rojo-codigo);
+    border-color:var(--rojo-codigo);
+}
+.shock-tab.active .roman,
+.shock-tab.active .label{color:#fff}
+.shock-tab[data-grade="I"].active{background:var(--verde-vital);border-color:var(--verde-vital)}
+.shock-tab[data-grade="II"].active{background:var(--oro);border-color:var(--oro)}
+.shock-tab[data-grade="III"].active{background:#d97706;border-color:#d97706}
+.shock-tab[data-grade="IV"].active{background:var(--rojo-codigo);border-color:var(--rojo-codigo)}
+
+.shock-detail{
+    background:#fff;
+    border:1px solid rgba(26,22,18,.08);
+    border-radius:14px;
+    padding:2rem;
+    box-shadow:var(--shadow-sm);
+}
+.shock-panel{display:none}
+.shock-panel.active{display:block;animation:fadeIn .4s ease}
+.shock-panel h3{
+    font-family:'Fraunces',serif;
+    font-size:1.7rem;
+    font-weight:700;
+    margin-bottom:1.2rem;
+    letter-spacing:-.02em;
+}
+.shock-stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:1rem;
+    margin-bottom:1.5rem;
+}
+.stat{
+    background:var(--crema);
+    padding:1rem;
+    border-radius:8px;
+    border-left:3px solid var(--rojo-codigo);
+}
+.stat-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.65rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:var(--gris-neutro);
+    margin-bottom:.3rem;
+}
+.stat-value{
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+    font-weight:700;
+    color:var(--negro);
+}
+.shock-action{
+    background:rgba(200,16,46,.05);
+    border:1px solid rgba(200,16,46,.2);
+    border-radius:10px;
+    padding:1.2rem;
+}
+.shock-action strong{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.7rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:var(--rojo-codigo);
+    margin-bottom:.5rem;
+}
+
+@media(max-width:600px){
+    .shock-tabs{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ===== REGLA DE LAS 4T ===== */
+.causes-section{
+    padding:5rem 1.5rem;
+    background:var(--negro);
+    color:var(--crema);
+    margin:0 -1.5rem;
+    position:relative;
+    overflow:hidden;
+}
+.causes-section::before{
+    content:'4T';
+    position:absolute;
+    top:50%;right:-5%;
+    transform:translateY(-50%);
+    font-family:'Fraunces',serif;
+    font-size:clamp(15rem,30vw,28rem);
+    font-weight:800;
+    color:rgba(200,16,46,.05);
+    line-height:1;
+    pointer-events:none;
+}
+.causes-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:1.2rem;
+    margin-top:2.5rem;
+    position:relative;z-index:1;
+}
+.cause-card{
+    background:rgba(245,237,225,.04);
+    border:1px solid rgba(245,237,225,.1);
+    border-radius:12px;
+    padding:1.5rem;
+    transition:all .3s ease;
+    cursor:pointer;
+}
+.cause-card:hover{
+    background:rgba(200,16,46,.08);
+    border-color:var(--rojo-codigo);
+    transform:translateY(-3px);
+}
+.cause-letter{
+    font-family:'Fraunces',serif;
+    font-size:3.5rem;
+    font-weight:800;
+    color:var(--rojo-codigo);
+    line-height:1;
+    margin-bottom:.5rem;
+    letter-spacing:-.04em;
+}
+.cause-card h4{
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+    margin-bottom:.4rem;
+    color:var(--crema);
+}
+.cause-pct{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.8rem;
+    color:var(--oro);
+    margin-bottom:.8rem;
+    letter-spacing:.05em;
+}
+.cause-card p{
+    font-size:.88rem;
+    color:rgba(245,237,225,.7);
+}
+
+/* ===== QUIZ ===== */
+.quiz-section{padding:5rem 1.5rem}
+.quiz-card{
+    background:linear-gradient(135deg,#fff,var(--crema));
+    border:1px solid rgba(26,22,18,.08);
+    border-radius:18px;
+    padding:2.5rem;
+    box-shadow:var(--shadow-md);
+    max-width:760px;
+    margin:2rem auto 0;
+}
+.quiz-progress{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:1.5rem;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.75rem;
+    color:var(--gris-neutro);
+    letter-spacing:.1em;
+}
+.progress-bar{
+    height:4px;
+    background:rgba(26,22,18,.08);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:1.5rem;
+}
+.progress-fill{
+    height:100%;
+    background:var(--rojo-codigo);
+    width:0%;
+    transition:width .4s ease;
+}
+.quiz-question{
+    font-family:'Fraunces',serif;
+    font-size:1.4rem;
+    font-weight:600;
+    line-height:1.3;
+    margin-bottom:1.5rem;
+}
+.quiz-options{display:flex;flex-direction:column;gap:.6rem}
+.quiz-option{
+    background:#fff;
+    border:1.5px solid rgba(26,22,18,.1);
+    padding:1rem 1.2rem;
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .25s ease;
+    font-size:.95rem;
+    text-align:left;
+    font-family:inherit;
+    color:var(--negro);
+    display:flex;align-items:center;gap:.8rem;
+}
+.quiz-option:hover{border-color:var(--rojo-codigo);background:rgba(200,16,46,.03)}
+.quiz-option .letter{
+    flex-shrink:0;
+    width:28px;height:28px;
+    border-radius:6px;
+    background:rgba(26,22,18,.06);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.8rem;
+    font-weight:600;
+}
+.quiz-option.correct{
+    border-color:var(--verde-vital);
+    background:rgba(61,122,90,.08);
+}
+.quiz-option.correct .letter{background:var(--verde-vital);color:#fff}
+.quiz-option.incorrect{
+    border-color:var(--rojo-codigo);
+    background:rgba(200,16,46,.05);
+}
+.quiz-option.incorrect .letter{background:var(--rojo-codigo);color:#fff}
+.quiz-option:disabled{cursor:not-allowed;opacity:.6}
+.quiz-option:disabled.correct,.quiz-option:disabled.incorrect{opacity:1}
+
+.quiz-feedback{
+    margin-top:1.2rem;
+    padding:1rem;
+    border-radius:8px;
+    font-size:.92rem;
+    display:none;
+}
+.quiz-feedback.show{display:block;animation:fadeIn .3s ease}
+.quiz-feedback.right{background:rgba(61,122,90,.1);border-left:3px solid var(--verde-vital);color:#1f4d33}
+.quiz-feedback.wrong{background:rgba(200,16,46,.08);border-left:3px solid var(--rojo-codigo);color:var(--rojo-oscuro)}
+
+.quiz-nav{
+    display:flex;justify-content:space-between;
+    margin-top:1.5rem;gap:.8rem;
+}
+.quiz-result{
+    text-align:center;
+    display:none;
+}
+.quiz-result.show{display:block}
+.quiz-result .score{
+    font-family:'Fraunces',serif;
+    font-size:4rem;
+    font-weight:800;
+    color:var(--rojo-codigo);
+    line-height:1;
+    margin-bottom:.5rem;
+}
+.quiz-result h3{
+    font-family:'Fraunces',serif;
+    font-size:1.6rem;
+    margin-bottom:.5rem;
+}
+.quiz-result p{color:var(--grafito);margin-bottom:1.5rem}
+
+/* ===== FOOTER ===== */
+footer{
+    background:var(--negro);
+    color:rgba(245,237,225,.7);
+    padding:3rem 1.5rem 2rem;
+    margin:0 -1.5rem;
+    text-align:center;
+    border-top:1px solid rgba(245,237,225,.08);
+}
+footer .logo{color:var(--crema);justify-content:center;margin-bottom:1rem}
+footer p{font-size:.85rem;max-width:540px;margin:0 auto .8rem}
+footer .credits{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.7rem;
+    letter-spacing:.1em;
+    color:rgba(245,237,225,.4);
+    margin-top:1.5rem;
+    padding-top:1.5rem;
+    border-top:1px solid rgba(245,237,225,.08);
+}
+footer .credits span{color:var(--rojo-codigo)}
+
+/* ===== MODAL ===== */
+.modal{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(26,22,18,.85);
+    backdrop-filter:blur(8px);
+    z-index:2000;
+    padding:1rem;
+    align-items:center;justify-content:center;
+    overflow-y:auto;
+}
+.modal.open{display:flex;animation:fadeIn .25s ease}
+.modal-content{
+    background:var(--crema);
+    border-radius:14px;
+    padding:2rem;
+    max-width:600px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    position:relative;
+    border-top:5px solid var(--rojo-codigo);
+}
+.modal-close{
+    position:absolute;
+    top:1rem;right:1rem;
+    background:none;border:none;
+    font-size:1.5rem;
+    cursor:pointer;
+    color:var(--gris-neutro);
+    width:36px;height:36px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{background:rgba(26,22,18,.08)}
+.modal-content h3{
+    font-family:'Fraunces',serif;
+    font-size:1.8rem;
+    margin-bottom:.3rem;
+    padding-right:2rem;
+}
+.modal-content .subtitle{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.75rem;
+    color:var(--rojo-codigo);
+    letter-spacing:.15em;
+    margin-bottom:1.5rem;
+}
+.modal-section{margin-bottom:1.3rem}
+.modal-section h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:var(--rojo-codigo);
+    margin-bottom:.6rem;
+    padding-bottom:.4rem;
+    border-bottom:1px solid rgba(200,16,46,.2);
+}
+.modal-section p,.modal-section ul{font-size:.92rem;color:var(--grafito)}
+.modal-section ul{list-style:none}
+.modal-section ul li{
+    padding:.35rem 0;
+    padding-left:1.2rem;
+    position:relative;
+}
+.modal-section ul li::before{
+    content:'▸';
+    position:absolute;left:0;
+    color:var(--rojo-codigo);
+}
+
+/* Animaciones de entrada al hacer scroll */
+.fade-in{opacity:0;transform:translateY(20px);transition:all .8s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* Scroll indicator */
+.scroll-indicator{
+    position:fixed;
+    top:0;left:0;
+    height:3px;
+    background:var(--rojo-codigo);
+    width:0%;
+    z-index:1001;
+    transition:width .1s linear;
+}
+</style>
+</head>
+<body>
+
+<!-- Indicador de scroll -->
+<div class="scroll-indicator" id="scrollBar"></div>
+
+<!-- NAVEGACIÓN -->
+<nav>
+    <div class="nav-inner">
+        <a href="#inicio" class="logo">
+            <span class="logo-pulse"></span>
+            Código Rojo
+        </a>
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#complicaciones" onclick="closeMenu()">Complicaciones</a></li>
+            <li><a href="#codigo-rojo" onclick="closeMenu()">Código Rojo</a></li>
+            <li><a href="#tiempos" onclick="closeMenu()">Manejo Temporal</a></li>
+            <li><a href="#roles" onclick="closeMenu()">Roles del Equipo</a></li>
+            <li><a href="#choque" onclick="closeMenu()">Choque</a></li>
+            <li><a href="#causas" onclick="closeMenu()">Las 4T</a></li>
+            <li><a href="#quiz" onclick="closeMenu()">Evaluación</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+    <div class="hero-grid">
+        <div class="hero-text">
+            <span class="eyebrow">
+                <span style="width:6px;height:6px;background:var(--rojo-codigo);border-radius:50%;display:inline-block"></span>
+                Emergencia Obstétrica · Guía Clínica
+            </span>
+            <h1>Cada minuto<br>cuenta.<br><span class="red">Cada gota,</span><br>también.</h1>
+            <p>Una guía interactiva sobre las principales complicaciones obstétricas, con énfasis en el reconocimiento temprano y el manejo del Código Rojo: la respuesta sistematizada ante hemorragia obstétrica masiva.</p>
+            <div class="btn-group">
+                <a href="#codigo-rojo" class="btn btn-primary">Activar Protocolo →</a>
+                <a href="#complicaciones" class="btn btn-secondary">Ver complicaciones</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="vital-circle"></div>
+            <div class="vital-circle-2"></div>
+            <div class="vital-center"><span>R0</span></div>
+            <div class="float-label fl-1">Tiempo: 0 min</div>
+            <div class="float-label fl-2">FC ↑ · TA ↓</div>
+            <div class="float-label fl-3">Activar equipo</div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPLICACIONES -->
+<section id="complicaciones">
+    <div class="container">
+        <div class="section-head fade-in">
+            <div>
+                <span class="section-num">/ 01 — PANORAMA</span>
+                <h2>Las complicaciones que <em style="color:var(--rojo-codigo);font-style:italic">no podemos ignorar</em>.</h2>
+            </div>
+        </div>
+
+        <div class="complications-grid">
+            <div class="comp-card fade-in" onclick="openModal('hpp')">
+                <div class="comp-icon">🩸</div>
+                <span class="tag tag-critical">Crítica · Más frecuente</span>
+                <h3>Hemorragia Postparto</h3>
+                <p>Pérdida sanguínea ≥500 mL tras parto vaginal o ≥1000 mL tras cesárea. Primera causa de muerte materna en el mundo.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('preeclampsia')">
+                <div class="comp-icon">⚡</div>
+                <span class="tag tag-critical">Crítica</span>
+                <h3>Preeclampsia / Eclampsia</h3>
+                <p>Hipertensión + proteinuria tras la semana 20. La eclampsia añade convulsiones tónico-clónicas. Riesgo de HELLP.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('sepsis')">
+                <div class="comp-icon">🌡️</div>
+                <span class="tag tag-critical">Crítica</span>
+                <h3>Sepsis Obstétrica</h3>
+                <p>Disfunción orgánica por infección periparto. Endometritis, corioamnionitis, ITU complicada. Mortalidad alta sin tratamiento oportuno.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('embolia')">
+                <div class="comp-icon">💨</div>
+                <span class="tag tag-critical">Crítica</span>
+                <h3>Embolia de Líquido Amniótico</h3>
+                <p>Catastrófica e impredecible. Colapso cardiovascular súbito + CID. Mortalidad cercana al 60%.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('placenta')">
+                <div class="comp-icon">🩺</div>
+                <span class="tag tag-urgent">Urgente</span>
+                <h3>Trastornos Placentarios</h3>
+                <p>Placenta previa, abruptio, acretismo. Sangrado anteparto e intraparto que puede progresar a Código Rojo.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('rotura')">
+                <div class="comp-icon">⚠️</div>
+                <span class="tag tag-urgent">Urgente</span>
+                <h3>Rotura Uterina</h3>
+                <p>Solución de continuidad del miometrio. Mayor riesgo en cesárea previa. Compromiso fetal y materno súbito.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('distocia')">
+                <div class="comp-icon">🤰</div>
+                <span class="tag tag-moderate">Moderada</span>
+                <h3>Distocias del Trabajo de Parto</h3>
+                <p>Detención de la progresión por causa fetal, materna o de fuerzas. Indicación frecuente de cesárea de urgencia.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+
+            <div class="comp-card fade-in" onclick="openModal('diabetes')">
+                <div class="comp-icon">🍯</div>
+                <span class="tag tag-moderate">Moderada</span>
+                <h3>Diabetes Gestacional</h3>
+                <p>Intolerancia a carbohidratos durante el embarazo. Macrosomía, hipoglucemia neonatal y mayor riesgo cardiovascular materno futuro.</p>
+                <div class="comp-more">Ver detalle →</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CÓDIGO ROJO -->
+<section class="codigo-rojo-section" id="codigo-rojo">
+    <div class="container">
+        <div class="cr-eyebrow">/ 02 — Protocolo de activación</div>
+        <h2>Código <em>Rojo</em>.<br>La respuesta que salva vidas.</h2>
+        <p class="cr-intro">Sistema organizado de respuesta rápida ante hemorragia obstétrica severa. Estandariza acciones, asigna roles y minimiza la demora terapéutica en los primeros minutos críticos.</p>
+
+        <div class="cr-definition fade-in">
+            <h4>Definición operativa</h4>
+            <p>Pérdida sanguínea estimada <strong>≥1000 mL</strong> con signos de choque (FC >100, PAS <90, hipoperfusión), o pérdida de cualquier magnitud que compromete hemodinámicamente a la paciente.</p>
+        </div>
+    </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="tiempos">
+    <div class="container">
+        <div class="section-head fade-in">
+            <div>
+                <span class="section-num">/ 03 — LÍNEA DE TIEMPO</span>
+                <h2>Manejo cronométrico:<br>la regla de oro.</h2>
+            </div>
+        </div>
+
+        <div class="timeline-tabs" id="timelineTabs">
+            <button class="timeline-tab active" data-panel="t0">Min 0</button>
+            <button class="timeline-tab" data-panel="t1">1-20 min</button>
+            <button class="timeline-tab" data-panel="t2">20-60 min</button>
+            <button class="timeline-tab" data-panel="t3">+ 60 min</button>
+        </div>
+
+        <div class="timeline-content" style="background:var(--negro);color:var(--crema)">
+            <div class="tl-panel active" id="t0">
+                <div class="tl-time">00:00</div>
+                <h3>Activación · Diagnóstico</h3>
+                <ul class="tl-list">
+                    <li>Reconocer la hemorragia y activar verbalmente el <strong>Código Rojo</strong></li>
+                    <li>Convocar al equipo: ginecoobstetra, anestesia, enfermería, banco de sangre</li>
+                    <li>Asignar roles (coordinador, asistente 1, asistente 2, circulante)</li>
+                    <li>Registrar hora exacta de inicio del sangrado</li>
+                    <li>Posición: trendelenburg + decúbito lateral izquierdo</li>
+                </ul>
+            </div>
+
+            <div class="tl-panel" id="t1">
+                <div class="tl-time">01-20</div>
+                <h3>Reanimación · Resucitación</h3>
+                <ul class="tl-list">
+                    <li>Dos accesos venosos calibre 14-16G; cristaloides tibios (500 mL en bolo)</li>
+                    <li>Monitorización: FC, TA, SatO₂, EKG, diuresis horaria con sonda Foley</li>
+                    <li>Oxígeno por mascarilla facial 8-10 L/min</li>
+                    <li>Laboratorios: hemograma, TP/TTP, fibrinógeno, gasometría, lactato, pruebas cruzadas</li>
+                    <li>Identificar causa (4T) y tratamiento dirigido (uterotónicos, masaje, revisión de canal)</li>
+                    <li>Iniciar transfusión si Hb <7 o pérdida >1500 mL: protocolo masivo 1:1:1</li>
+                </ul>
+            </div>
+
+            <div class="tl-panel" id="t2">
+                <div class="tl-time">20-60</div>
+                <h3>Estabilización · Tratamiento dirigido</h3>
+                <ul class="tl-list">
+                    <li>Reevaluar sangrado y respuesta hemodinámica continuamente</li>
+                    <li>Ácido tranexámico 1g IV (en los primeros 60 min reduce mortalidad)</li>
+                    <li>Si persiste: balón de Bakri, suturas compresivas (B-Lynch)</li>
+                    <li>Considerar embolización de arterias uterinas si está disponible</li>
+                    <li>Corregir coagulopatía con plasma fresco congelado y plaquetas</li>
+                    <li>Mantener objetivos: Hb >7-8, plaquetas >50.000, fibrinógeno >2 g/L</li>
+                </ul>
+            </div>
+
+            <div class="tl-panel" id="t3">
+                <div class="tl-time">>60</div>
+                <h3>Manejo avanzado · UCI</h3>
+                <ul class="tl-list">
+                    <li>Si refractaria: ligadura de arterias hipogástricas o histerectomía obstétrica</li>
+                    <li>Traslado a UCI para monitoreo invasivo y soporte multiorgánico</li>
+                    <li>Vigilancia de complicaciones: SDRA, falla renal, CID, síndrome de Sheehan</li>
+                    <li>Documentación completa del evento y debriefing del equipo</li>
+                    <li>Soporte psicológico a la paciente y familiares</li>
+                    <li>Análisis de causa raíz para mejora institucional</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROLES -->
+<section class="roles-section" id="roles">
+    <div class="container">
+        <div class="section-head fade-in">
+            <div>
+                <span class="section-num">/ 04 — ESTRUCTURA DEL EQUIPO</span>
+                <h2>Cuatro roles. Una misión.</h2>
+            </div>
+        </div>
+
+        <div class="roles-grid">
+            <div class="role-card role-1 fade-in">
+                <div class="role-num">ROL 01</div>
+                <h4>Coordinador (a)</h4>
+                <ul>
+                    <li>Líder del equipo; usualmente el ginecoobstetra</li>
+                    <li>Evalúa, define conducta y comunica</li>
+                    <li>Realiza maniobras: revisión, masaje uterino, tratamiento quirúrgico</li>
+                    <li>Decide escalonamiento terapéutico</li>
+                </ul>
+            </div>
+
+            <div class="role-card role-2 fade-in">
+                <div class="role-num">ROL 02</div>
+                <h4>Asistente 1</h4>
+                <ul>
+                    <li>Manejo de vía aérea y oxigenación</li>
+                    <li>Acceso venoso y administración de líquidos</li>
+                    <li>Vigilancia hemodinámica continua</li>
+                    <li>Habitualmente: anestesiólogo</li>
+                </ul>
+            </div>
+
+            <div class="role-card role-3 fade-in">
+                <div class="role-num">ROL 03</div>
+                <h4>Asistente 2</h4>
+                <ul>
+                    <li>Cuantifica pérdidas sanguíneas</li>
+                    <li>Toma de muestras de laboratorio</li>
+                    <li>Aplica medicamentos según indicación</li>
+                    <li>Habitualmente: enfermería</li>
+                </ul>
+            </div>
+
+            <div class="role-card role-4 fade-in">
+                <div class="role-num">ROL 04</div>
+                <h4>Circulante</h4>
+                <ul>
+                    <li>Comunicación con banco de sangre</li>
+                    <li>Solicita hemoderivados e insumos</li>
+                    <li>Registra cronología del evento</li>
+                    <li>Coordina traslado a quirófano o UCI</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CHOQUE HEMORRÁGICO -->
+<section class="shock-section" id="choque">
+    <div class="container">
+        <div class="section-head fade-in">
+            <div>
+                <span class="section-num">/ 05 — CLASIFICACIÓN</span>
+                <h2>Grados de choque hipovolémico.</h2>
+            </div>
+        </div>
+
+        <div class="shock-tabs">
+            <button class="shock-tab active" data-grade="I" onclick="showShock('I')">
+                <div class="roman">I</div>
+                <span class="label">Compensado</span>
+            </button>
+            <button class="shock-tab" data-grade="II" onclick="showShock('II')">
+                <div class="roman">II</div>
+                <span class="label">Leve</span>
+            </button>
+            <button class="shock-tab" data-grade="III" onclick="showShock('III')">
+                <div class="roman">III</div>
+                <span class="label">Moderado</span>
+            </button>
+            <button class="shock-tab" data-grade="IV" onclick="showShock('IV')">
+                <div class="roman">IV</div>
+                <span class="label">Severo</span>
+            </button>
+        </div>
+
+        <div class="shock-detail">
+            <div class="shock-panel active" id="shock-I">
+                <h3>Grado I · Choque Compensado</h3>
+                <div class="shock-stats">
+                    <div class="stat"><div class="stat-label">Pérdida</div><div class="stat-value">10-15%<br><span style="font-size:.8rem;font-weight:400">500-1000 mL</span></div></div>
+                    <div class="stat"><div class="stat-label">FC</div><div class="stat-value">< 100</div></div>
+                    <div class="stat"><div class="stat-label">PAS</div><div class="stat-value">Normal</div></div>
+                    <div class="stat"><div class="stat-label">Estado</div><div class="stat-value">Alerta</div></div>
+                </div>
+                <div class="shock-action">
+                    <strong>Acción</strong>
+                    Reposición con cristaloides. Identificar y tratar causa. Vigilancia estrecha. La paciente puede aparentar estabilidad pero ya hay pérdida significativa.
+                </div>
+            </div>
+
+            <div class="shock-panel" id="shock-II">
+                <h3>Grado II · Choque Leve</h3>
+                <div class="shock-stats">
+                    <div class="stat"><div class="stat-label">Pérdida</div><div class="stat-value">16-25%<br><span style="font-size:.8rem;font-weight:400">1000-1500 mL</span></div></div>
+                    <div class="stat"><div class="stat-label">FC</div><div class="stat-value">100-120</div></div>
+                    <div class="stat"><div class="stat-label">PAS</div><div class="stat-value">80-90</div></div>
+                    <div class="stat"><div class="stat-label">Estado</div><div class="stat-value">Ansiedad</div></div>
+                </div>
+                <div class="shock-action">
+                    <strong>Acción</strong>
+                    Cristaloides 1-2 L en bolo + considerar transfusión. Activar Código Rojo si no se controla rápido. Iniciar uterotónicos si causa es atonía.
+                </div>
+            </div>
+
+            <div class="shock-panel" id="shock-III">
+                <h3>Grado III · Choque Moderado</h3>
+                <div class="shock-stats">
+                    <div class="stat"><div class="stat-label">Pérdida</div><div class="stat-value">26-35%<br><span style="font-size:.8rem;font-weight:400">1500-2000 mL</span></div></div>
+                    <div class="stat"><div class="stat-label">FC</div><div class="stat-value">120-140</div></div>
+                    <div class="stat"><div class="stat-label">PAS</div><div class="stat-value">70-80</div></div>
+                    <div class="stat"><div class="stat-label">Estado</div><div class="stat-value">Confusión</div></div>
+                </div>
+                <div class="shock-action">
+                    <strong>Acción</strong>
+                    Transfusión inmediata con protocolo masivo 1:1:1 (GRE:PFC:PLT). Quirófano disponible. Procedimientos hemostáticos: balón, suturas. Considerar TXA.
+                </div>
+            </div>
+
+            <div class="shock-panel" id="shock-IV">
+                <h3>Grado IV · Choque Severo / Refractario</h3>
+                <div class="shock-stats">
+                    <div class="stat"><div class="stat-label">Pérdida</div><div class="stat-value">>35%<br><span style="font-size:.8rem;font-weight:400">>2000 mL</span></div></div>
+                    <div class="stat"><div class="stat-label">FC</div><div class="stat-value">>140 o brady</div></div>
+                    <div class="stat"><div class="stat-label">PAS</div><div class="stat-value"><70</div></div>
+                    <div class="stat"><div class="stat-label">Estado</div><div class="stat-value">Letargia</div></div>
+                </div>
+                <div class="shock-action">
+                    <strong>Acción</strong>
+                    Riesgo vital inminente. Cirugía de control de daños: ligadura arterial, histerectomía obstétrica. UCI. Vasopresores. Manejo de coagulopatía agresivo.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4T -->
+<section class="causes-section" id="causas">
+    <div class="container">
+        <div class="cr-eyebrow">/ 06 — Mnemotecnia clínica</div>
+        <h2 style="font-family:'Fraunces',serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--crema)">La regla de las <em style="color:var(--rojo-codigo);font-style:italic">4T</em>.</h2>
+        <p style="color:rgba(245,237,225,.7);max-width:540px;margin-top:1rem">Las cuatro causas de hemorragia postparto. Recordarlas en orden permite un tamizaje sistemático en segundos.</p>
+
+        <div class="causes-grid">
+            <div class="cause-card fade-in">
+                <div class="cause-letter">T</div>
+                <h4>Tono</h4>
+                <div class="cause-pct">≈ 70% de los casos</div>
+                <p>Atonía uterina. El útero no se contrae adecuadamente tras el alumbramiento. Manejo: masaje bimanual, oxitocina, ergonovina, misoprostol, carbetocina, balón de Bakri.</p>
+            </div>
+
+            <div class="cause-card fade-in">
+                <div class="cause-letter">T</div>
+                <h4>Trauma</h4>
+                <div class="cause-pct">≈ 20% de los casos</div>
+                <p>Laceraciones del canal del parto, hematomas, rotura uterina, inversión uterina. Manejo: revisión sistemática, sutura por planos, reposición uterina si corresponde.</p>
+            </div>
+
+            <div class="cause-card fade-in">
+                <div class="cause-letter">T</div>
+                <h4>Tejido</h4>
+                <div class="cause-pct">≈ 10% de los casos</div>
+                <p>Retención de restos placentarios o coágulos. Acretismo placentario. Manejo: revisión manual de cavidad, legrado obstétrico, eventual histerectomía en acretismos severos.</p>
+            </div>
+
+            <div class="cause-card fade-in">
+                <div class="cause-letter">T</div>
+                <h4>Trombina</h4>
+                <div class="cause-pct">≈ 1% de los casos</div>
+                <p>Trastornos de la coagulación: CID, preeclampsia severa, embolia de líquido amniótico, anticoagulación. Manejo: corregir factores con plasma, plaquetas, crioprecipitados.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- QUIZ -->
+<section class="quiz-section" id="quiz">
+    <div class="container">
+        <div class="section-head fade-in" style="text-align:center;justify-content:center">
+            <div>
+                <span class="section-num">/ 07 — AUTOEVALUACIÓN</span>
+                <h2>Pon a prueba tus conocimientos.</h2>
+            </div>
+        </div>
+
+        <div class="quiz-card">
+            <div id="quizMain">
+                <div class="quiz-progress">
+                    <span id="qNum">PREGUNTA 1 / 5</span>
+                    <span id="qScore">0 ACIERTOS</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+                <h3 class="quiz-question" id="qText"></h3>
+                <div class="quiz-options" id="qOptions"></div>
+                <div class="quiz-feedback" id="qFeedback"></div>
+                <div class="quiz-nav">
+                    <button class="btn btn-secondary" id="btnRestart" style="display:none" onclick="restartQuiz()">↻ Reiniciar</button>
+                    <button class="btn btn-primary" id="btnNext" style="display:none;margin-left:auto" onclick="nextQuestion()">Siguiente →</button>
+                </div>
+            </div>
+
+            <div class="quiz-result" id="quizResult">
+                <div class="score" id="finalScore">0/5</div>
+                <h3 id="resultTitle">¡Buen trabajo!</h3>
+                <p id="resultMsg"></p>
+                <button class="btn btn-primary" onclick="restartQuiz()">↻ Volver a intentar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="logo"><span class="logo-pulse"></span>Código Rojo</div>
+    <p>Recurso educativo dirigido a estudiantes y profesionales de la salud en formación. No reemplaza el juicio clínico ni los protocolos institucionales vigentes.</p>
+    <div class="credits">
+        Diseñado por <span>Dr. Juan David Serna Zuluaga</span> · MD, MSc · Semiología Médica · 2026
+    </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModalOverlay(event)">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+/* ===== Datos de complicaciones para modal ===== */
+const compData = {
+    hpp:{
+        title:'Hemorragia Postparto',
+        subtitle:'COMPLICACIÓN OBSTÉTRICA · CRÍTICA',
+        sections:[
+            {h:'Definición',c:'<p>Pérdida sanguínea ≥500 mL tras parto vaginal o ≥1000 mL tras cesárea, o cualquier sangrado que cause inestabilidad hemodinámica. Es la <strong>primera causa de muerte materna a nivel mundial</strong>.</p>'},
+            {h:'Clasificación temporal',c:'<ul><li><strong>Primaria:</strong> dentro de las primeras 24 horas postparto</li><li><strong>Secundaria:</strong> entre 24 horas y 12 semanas postparto</li></ul>'},
+            {h:'Factores de riesgo',c:'<ul><li>Sobredistensión uterina (gemelar, polihidramnios, macrosomía)</li><li>Trabajo de parto prolongado o precipitado</li><li>Multiparidad</li><li>Antecedente de HPP</li><li>Corioamnionitis</li><li>Trastornos hipertensivos</li></ul>'},
+            {h:'Manejo inicial',c:'<ul><li>Activación de Código Rojo</li><li>Masaje uterino bimanual</li><li>Oxitocina 10 UI IM o 20 UI en 500 mL SSN</li><li>Identificar causa por las 4T</li><li>Reposición de volumen y hemoderivados</li></ul>'}
+        ]
+    },
+    preeclampsia:{
+        title:'Preeclampsia / Eclampsia',
+        subtitle:'TRASTORNO HIPERTENSIVO · CRÍTICO',
+        sections:[
+            {h:'Definición',c:'<p>Hipertensión arterial (≥140/90 mmHg) que aparece después de la semana 20 de gestación, acompañada de proteinuria o disfunción de órgano blanco. La <strong>eclampsia</strong> añade convulsiones tónico-clónicas no atribuibles a otra causa.</p>'},
+            {h:'Criterios de severidad',c:'<ul><li>PAS ≥160 o PAD ≥110 mmHg</li><li>Trombocitopenia <100.000</li><li>Transaminasas elevadas al doble</li><li>Creatinina >1.1 mg/dL</li><li>Síntomas neurológicos (cefalea, fosfenos, escotomas)</li><li>Edema pulmonar</li></ul>'},
+            {h:'Síndrome HELLP',c:'<p>Variante severa: <strong>H</strong>emólisis, <strong>E</strong>levación de enzimas hepáticas (<strong>L</strong>iver) y trombocitopenia (<strong>L</strong>ow <strong>P</strong>latelets). Alta mortalidad materna y perinatal.</p>'},
+            {h:'Manejo',c:'<ul><li>Sulfato de magnesio: 4-6 g IV en bolo + 1-2 g/h en infusión</li><li>Antihipertensivos: labetalol, hidralazina, nifedipino</li><li>Finalización del embarazo según edad gestacional y severidad</li><li>Vigilancia de toxicidad por magnesio (reflejos, diuresis, FR)</li></ul>'}
+        ]
+    },
+    sepsis:{
+        title:'Sepsis Obstétrica',
+        subtitle:'INFECCIÓN GRAVE · CRÍTICA',
+        sections:[
+            {h:'Definición',c:'<p>Disfunción orgánica potencialmente mortal causada por una respuesta desregulada del huésped a una infección, en el contexto del embarazo, parto o puerperio.</p>'},
+            {h:'Focos comunes',c:'<ul><li>Endometritis postparto/postcesárea</li><li>Corioamnionitis</li><li>Infección de tracto urinario complicada</li><li>Infección de herida quirúrgica</li><li>Mastitis abscedada</li><li>Aborto séptico</li></ul>'},
+            {h:'Reconocimiento (qSOFA / SOFA)',c:'<ul><li>FR ≥22</li><li>Alteración del estado mental</li><li>PAS ≤100 mmHg</li><li>Lactato ≥2 mmol/L</li></ul>'},
+            {h:'Manejo (paquete de 1 hora)',c:'<ul><li>Hemocultivos antes de antibióticos</li><li>Antibióticos de amplio espectro IV</li><li>Cristaloides 30 mL/kg si hipotensión o lactato elevado</li><li>Vasopresores si no responde a líquidos</li><li>Control de foco (drenaje, legrado, cirugía)</li></ul>'}
+        ]
+    },
+    embolia:{
+        title:'Embolia de Líquido Amniótico',
+        subtitle:'CATASTRÓFICA · CRÍTICA',
+        sections:[
+            {h:'Definición',c:'<p>Síndrome anafilactoide del embarazo. Entrada de líquido amniótico, células fetales o detritos a la circulación materna que desencadena colapso cardiopulmonar y CID.</p>'},
+            {h:'Triada clásica',c:'<ul><li>Hipoxia súbita</li><li>Hipotensión / colapso cardiovascular</li><li>Coagulopatía (CID)</li></ul>'},
+            {h:'Manejo',c:'<ul><li>Soporte vital avanzado: vía aérea, ventilación, circulación</li><li>RCP de alta calidad si paro cardiaco</li><li>Cesárea perimortem si embarazo >20 semanas y no respuesta en 4 minutos</li><li>Manejo agresivo de CID con hemoderivados</li><li>Traslado a UCI</li></ul>'},
+            {h:'Pronóstico',c:'<p>Mortalidad materna entre 20-60% según series. Alta morbilidad neurológica en sobrevivientes y neonatos.</p>'}
+        ]
+    },
+    placenta:{
+        title:'Trastornos Placentarios',
+        subtitle:'PATOLOGÍA DE INSERCIÓN · URGENTE',
+        sections:[
+            {h:'Placenta previa',c:'<p>Implantación sobre el orificio cervical interno. Sangrado <strong>indoloro, rojo rutilante</strong>, recurrente, en segundo o tercer trimestre. Manejo según edad gestacional y severidad.</p>'},
+            {h:'Abruptio placentae',c:'<p>Desprendimiento prematuro de placenta normoinserta. Sangrado <strong>doloroso, oscuro</strong>, con útero leñoso. Riesgo de CID y muerte fetal. Manejo: cesárea urgente si compromiso fetal o materno.</p>'},
+            {h:'Acretismo placentario',c:'<ul><li><strong>Acreta:</strong> adherida al miometrio</li><li><strong>Increta:</strong> invade el miometrio</li><li><strong>Percreta:</strong> atraviesa la serosa, puede invadir vejiga</li></ul><p>Riesgo elevado en pacientes con cesáreas previas + placenta previa. Manejo programado en centro de alta complejidad.</p>'}
+        ]
+    },
+    rotura:{
+        title:'Rotura Uterina',
+        subtitle:'EMERGENCIA QUIRÚRGICA · URGENTE',
+        sections:[
+            {h:'Definición',c:'<p>Solución de continuidad completa o incompleta del miometrio durante el embarazo o trabajo de parto. Puede comprometer membranas, placenta y feto.</p>'},
+            {h:'Factores de riesgo',c:'<ul><li>Cesárea previa (especialmente clásica)</li><li>Cirugía uterina previa (miomectomía)</li><li>Multiparidad</li><li>Uso inadecuado de uterotónicos</li><li>Trabajo de parto obstruido</li></ul>'},
+            {h:'Signos de alarma',c:'<ul><li>Dolor abdominal súbito e intenso</li><li>Pérdida del patrón contráctil</li><li>Bradicardia fetal o muerte fetal</li><li>Sangrado vaginal variable</li><li>Choque hipovolémico</li><li>Partes fetales palpables en abdomen</li></ul>'},
+            {h:'Manejo',c:'<p>Laparotomía urgente. Reparación primaria si es factible o histerectomía. Reanimación con hemoderivados. Vigilancia de complicaciones (lesión vesical, ureteral).</p>'}
+        ]
+    },
+    distocia:{
+        title:'Distocias del Trabajo de Parto',
+        subtitle:'PROGRESIÓN ANORMAL · MODERADA',
+        sections:[
+            {h:'Definición',c:'<p>Detención o progreso lento del trabajo de parto. Causa frecuente de cesárea de urgencia y morbilidad materna y fetal.</p>'},
+            {h:'Las 3 P',c:'<ul><li><strong>Poder (Power):</strong> contractilidad uterina inadecuada</li><li><strong>Pasajero (Passenger):</strong> tamaño, posición o presentación fetal</li><li><strong>Pasaje (Passage):</strong> pelvis materna inadecuada</li></ul>'},
+            {h:'Manejo',c:'<ul><li>Evaluar curva de Friedman / partograma</li><li>Amniotomía si membranas íntegras</li><li>Oxitocina con vigilancia estricta</li><li>Reevaluar a las 2-4 horas</li><li>Cesárea si no progresa o aparece compromiso fetal</li></ul>'}
+        ]
+    },
+    diabetes:{
+        title:'Diabetes Gestacional',
+        subtitle:'TRASTORNO METABÓLICO · MODERADA',
+        sections:[
+            {h:'Definición',c:'<p>Intolerancia a los carbohidratos diagnosticada por primera vez durante el embarazo. Afecta entre 5-15% de las gestaciones.</p>'},
+            {h:'Tamizaje',c:'<ul><li>Glucemia basal en primera consulta</li><li>Test de O\'Sullivan a las 24-28 semanas (50 g)</li><li>Curva de tolerancia oral con 75 g si está alterado</li></ul>'},
+            {h:'Riesgos asociados',c:'<ul><li>Macrosomía y distocia de hombros</li><li>Hipoglucemia neonatal</li><li>Preeclampsia</li><li>Prematuridad</li><li>Diabetes tipo 2 a largo plazo</li></ul>'},
+            {h:'Manejo',c:'<ul><li>Dieta y ejercicio como primera línea</li><li>Automonitoreo glucémico</li><li>Insulina si no se logran metas</li><li>Vigilancia fetal: ecografías seriadas, monitoreo</li><li>Reclasificación postparto a las 6-12 semanas</li></ul>'}
+        ]
+    }
+};
+
+/* ===== Modal ===== */
+function openModal(key){
+    const data=compData[key];if(!data)return;
+    let html=`<h3>${data.title}</h3><div class="subtitle">${data.subtitle}</div>`;
+    data.sections.forEach(s=>{
+        html+=`<div class="modal-section"><h4>${s.h}</h4>${s.c}</div>`;
+    });
+    document.getElementById('modalBody').innerHTML=html;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow='hidden';
+}
+function closeModal(){
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow='';
+}
+function closeModalOverlay(e){if(e.target.id==='modal')closeModal()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ===== Menú móvil ===== */
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function closeMenu(){document.getElementById('navLinks').classList.remove('open')}
+
+/* ===== Timeline tabs ===== */
+document.querySelectorAll('.timeline-tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+        document.querySelectorAll('.timeline-tab').forEach(x=>x.classList.remove('active'));
+        document.querySelectorAll('.tl-panel').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        document.getElementById(t.dataset.panel).classList.add('active');
+    });
+});
+
+/* ===== Choque ===== */
+function showShock(grade){
+    document.querySelectorAll('.shock-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.shock-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelector(`.shock-tab[data-grade="${grade}"]`).classList.add('active');
+    document.getElementById(`shock-${grade}`).classList.add('active');
+}
+
+/* ===== Quiz ===== */
+const questions=[
+    {
+        q:'¿Cuál es la pérdida sanguínea estimada que define una hemorragia postparto tras parto vaginal?',
+        opts:['≥ 250 mL','≥ 500 mL','≥ 1000 mL','≥ 2000 mL'],
+        correct:1,
+        expl:'Se define como ≥500 mL tras parto vaginal o ≥1000 mL tras cesárea (definición tradicional). Algunas guías actuales consideran cualquier pérdida que cause inestabilidad hemodinámica.'
+    },
+    {
+        q:'En la regla de las 4T, ¿cuál es la causa MÁS frecuente de hemorragia postparto?',
+        opts:['Trauma','Tejido','Trombina','Tono (atonía uterina)'],
+        correct:3,
+        expl:'La atonía uterina (Tono) representa aproximadamente el 70% de los casos de hemorragia postparto. Por eso siempre se evalúa primero.'
+    },
+    {
+        q:'¿Cuál es el momento óptimo para administrar ácido tranexámico en una hemorragia postparto?',
+        opts:['Después de 4 horas del inicio','En las primeras 3 horas, idealmente en la primera','Solo si hay coagulopatía confirmada','No está indicado en HPP'],
+        correct:1,
+        expl:'El estudio WOMAN demostró que el ácido tranexámico reduce la mortalidad por sangrado cuando se administra dentro de las primeras 3 horas, con mayor beneficio en la primera hora.'
+    },
+    {
+        q:'En un choque hipovolémico Grado III, ¿qué porcentaje de pérdida sanguínea esperarías?',
+        opts:['10-15%','16-25%','26-35%','>35%'],
+        correct:2,
+        expl:'El Grado III corresponde a pérdidas del 26-35% (1500-2000 mL), con FC 120-140, PAS 70-80 mmHg y confusión. Requiere transfusión inmediata.'
+    },
+    {
+        q:'¿Cuál de las siguientes es la primera intervención farmacológica en atonía uterina tras el alumbramiento?',
+        opts:['Misoprostol sublingual','Carbetocina','Oxitocina IV/IM','Ergonovina IM'],
+        correct:2,
+        expl:'La oxitocina (10 UI IM o 20 UI en 500 mL SSN IV) es el uterotónico de primera línea. Si no responde, se escalona a ergonovina, carbetocina o misoprostol según disponibilidad y contraindicaciones.'
+    }
+];
+
+let qIdx=0,qScore=0,answered=false;
+
+function loadQuestion(){
+    answered=false;
+    const q=questions[qIdx];
+    document.getElementById('qNum').textContent=`PREGUNTA ${qIdx+1} / ${questions.length}`;
+    document.getElementById('qScore').textContent=`${qScore} ACIERTOS`;
+    document.getElementById('progFill').style.width=`${((qIdx)/questions.length)*100}%`;
+    document.getElementById('qText').textContent=q.q;
+    const optsContainer=document.getElementById('qOptions');
+    optsContainer.innerHTML='';
+    const letters=['A','B','C','D'];
+    q.opts.forEach((opt,i)=>{
+        const btn=document.createElement('button');
+        btn.className='quiz-option';
+        btn.innerHTML=`<span class="letter">${letters[i]}</span><span>${opt}</span>`;
+        btn.onclick=()=>selectAnswer(i,btn);
+        optsContainer.appendChild(btn);
+    });
+    document.getElementById('qFeedback').className='quiz-feedback';
+    document.getElementById('qFeedback').textContent='';
+    document.getElementById('btnNext').style.display='none';
+    document.getElementById('btnRestart').style.display=qIdx>0?'inline-flex':'none';
+}
+
+function selectAnswer(idx,btn){
+    if(answered)return;
+    answered=true;
+    const q=questions[qIdx];
+    const all=document.querySelectorAll('.quiz-option');
+    all.forEach((b,i)=>{
+        b.disabled=true;
+        if(i===q.correct)b.classList.add('correct');
+        else if(i===idx)b.classList.add('incorrect');
+    });
+    const fb=document.getElementById('qFeedback');
+    if(idx===q.correct){
+        qScore++;
+        fb.className='quiz-feedback show right';
+        fb.innerHTML=`<strong>✓ Correcto.</strong> ${q.expl}`;
+    }else{
+        fb.className='quiz-feedback show wrong';
+        fb.innerHTML=`<strong>✗ Incorrecto.</strong> ${q.expl}`;
+    }
+    document.getElementById('qScore').textContent=`${qScore} ACIERTOS`;
+    document.getElementById('progFill').style.width=`${((qIdx+1)/questions.length)*100}%`;
+    document.getElementById('btnNext').style.display='inline-flex';
+    document.getElementById('btnNext').textContent=qIdx===questions.length-1?'Ver resultado →':'Siguiente →';
+}
+
+function nextQuestion(){
+    qIdx++;
+    if(qIdx>=questions.length){
+        showResult();
+    }else{
+        loadQuestion();
+    }
+}
+
+function showResult(){
+    document.getElementById('quizMain').style.display='none';
+    const r=document.getElementById('quizResult');
+    r.classList.add('show');
+    document.getElementById('finalScore').textContent=`${qScore}/${questions.length}`;
+    let title,msg;
+    if(qScore===questions.length){title='¡Excelente!';msg='Dominas el manejo del Código Rojo. Mantén siempre tus conocimientos actualizados.';}
+    else if(qScore>=3){title='¡Buen trabajo!';msg='Tienes una base sólida. Repasa los conceptos donde fallaste para afinar tu desempeño clínico.';}
+    else{title='A reforzar.';msg='Te recomendamos revisar nuevamente los conceptos clave del protocolo. La práctica salva vidas.';}
+    document.getElementById('resultTitle').textContent=title;
+    document.getElementById('resultMsg').textContent=msg;
+}
+
+function restartQuiz(){
+    qIdx=0;qScore=0;
+    document.getElementById('quizMain').style.display='block';
+    document.getElementById('quizResult').classList.remove('show');
+    loadQuestion();
+}
+
+loadQuestion();
+
+/* ===== Scroll bar ===== */
+window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    const w=(window.scrollY/h)*100;
+    document.getElementById('scrollBar').style.width=`${w}%`;
+});
+
+/* ===== Animación de aparición ===== */
+const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}
+    });
+},{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
